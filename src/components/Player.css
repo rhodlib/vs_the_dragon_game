@@ -1,0 +1,18 @@
+.player {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+
+.status {
+  display: flex;
+  gap: 5px;
+}
+
+.avatar,
+.turn {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
