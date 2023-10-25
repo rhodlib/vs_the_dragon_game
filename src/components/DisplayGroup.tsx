@@ -1,7 +1,12 @@
 import "./DisplayGroup.css";
 import Player from "./Player";
 
-export default function DisplayGroup(){
+type DisplayGroup = {
+    players: string[]
+}
+
+export default function DisplayGroup({ players }:DisplayGroup){
+    console.log(players)
     return <section className="display-group">
         <Player name="Player 1" turn/>
         <Player name="Player 2"/>

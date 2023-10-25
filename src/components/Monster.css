@@ -1,0 +1,30 @@
+.monster-container {
+}
+
+.monster-img {
+  width: 35%;
+  animation: breathing 3s ease-out infinite normal;
+}
+
+.monster-status {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: aliceblue;
+}
+
+@keyframes breathing {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.1);
+  }
+
+  60% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

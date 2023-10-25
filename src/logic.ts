@@ -2,6 +2,7 @@ import type { RuneClient } from "rune-games-sdk/multiplayer";
 
 export interface GameState {
   count: number;
+  players: string[];
 }
 
 type GameActions = {
@@ -19,8 +20,8 @@ export function getCount(game: GameState) {
 Rune.initLogic({
   minPlayers: 2,
   maxPlayers: 4,
-  setup: (): GameState => {
-    return { count: 0 };
+  setup: (allPlayersIds: string[]): GameState => {
+    return { players: allPlayersIds, count: 0 };
   },
   actions: {
     increment: ({ amount }, { game }) => {

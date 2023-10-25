@@ -26,7 +26,7 @@ function App() {
 
   return (
       <main>
-        <DisplayGroup/>
+        <DisplayGroup players={game.players}/>
         <CombatSection/>
         <Hand/>
       </main>

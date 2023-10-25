@@ -1,4 +1,8 @@
 .combat-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
   width: 100vw;
-  height: 200px;
+  height: 100%;
+  padding-bottom: 1em;
 }
