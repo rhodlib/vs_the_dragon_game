@@ -1,4 +1,4 @@
-import type { RuneClient } from "rune-games-sdk/multiplayer";
+import type { Players, RuneClient } from "rune-games-sdk/multiplayer";
 import monsters from "./monsters.json";
 
 export type MonsterType = {
@@ -14,6 +14,7 @@ export interface GameState {
   playersHp: Record<string, number>;
   turn: string;
   monsterZone: number;
+  players: Players;
 }
 
 type GameActions = {
@@ -33,6 +34,7 @@ Rune.initLogic({
       playersHp: {},
       turn: "",
       monsterZone: 0,
+      players: {},
     };
     for (const playerId of allPlayerIds) {
       game.playersHp[playerId] = 100;
