@@ -1,5 +1,12 @@
 import type { Players, RuneClient } from "rune-games-sdk/multiplayer";
 import monsters from "./monsters.json";
+import cards from "./cards.json";
+
+export type CardType = {
+  name: string;
+  dmg: number;
+  img: string;
+};
 
 export type MonsterType = {
   name: string;
@@ -11,6 +18,7 @@ export type MonsterType = {
 
 export interface GameState {
   monsters: MonsterType[];
+  cards: CardType[];
   playersHp: Record<string, number>;
   turn: string;
   monsterZone: number;
@@ -31,6 +39,7 @@ Rune.initLogic({
   setup: (allPlayerIds: string[]): GameState => {
     const game: GameState = {
       monsters,
+      cards,
       playersHp: {},
       turn: "",
       monsterZone: 0,
@@ -42,4 +51,12 @@ Rune.initLogic({
     return game;
   },
   actions: {},
+  events: {
+    playerJoined: (playerId, { game }) => {
+      game.playersHp[playerId] = 100;
+    },
+    playerLeft: (playerId, { game }) => {
+      delete game.playersHp[playerId];
+    },
+  },
 });

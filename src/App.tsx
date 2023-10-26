@@ -24,7 +24,7 @@ function App() {
       <main>
         <DisplayGroup players={game.players} playersHp={game.playersHp}/>
         <CombatSection monsterZone={game.monsterZone} monsters={game.monsters}/>
-        <Hand/>
+        <Hand cards={game.cards}/>
       </main>
   )
 }

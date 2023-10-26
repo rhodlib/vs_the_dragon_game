@@ -1,10 +1,15 @@
 import "./Hand.css";
 import Card from "./Card";
+import { CardType } from "../logic";
 
-export default function Hand(){
+type HandType = {
+    cards:  CardType[]
+}
+
+export default function Hand({cards}:HandType){
     return <section className="hand">
-        <Card/>
-        <Card/>
-        <Card/>
+        {
+            cards?.map(c => <Card key={c.name} name={c.name} dmg={c.dmg} img={c.img}/>)
+        }
     </section>
 }

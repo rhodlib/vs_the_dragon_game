@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Sword",
+        "dmg": -2,
+        "img": "/sword.png"
+    },
+    {
+        "name": "Potion",
+        "dmg": 10,
+        "img": "/pot.png"
+    },
+    {
+        "name": "Shield",
+        "dmg": 6,
+        "img": "/shield.png"
+    }
+]
