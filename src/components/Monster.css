@@ -1,6 +1,3 @@
-.monster-container {
-}
-
 .monster-img {
   width: 35%;
   animation: breathing 3s ease-out infinite normal;
@@ -9,6 +6,12 @@
 .monster-status {
   background-color: rgba(0, 0, 0, 0.5);
   color: aliceblue;
+}
+
+.monster-name {
+  color: aliceblue;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 @keyframes breathing {

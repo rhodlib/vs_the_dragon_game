@@ -2,14 +2,13 @@ import "./DisplayGroup.css";
 import Player from "./Player";
 
 type DisplayGroup = {
-    players: string[]
+    playerIds: Record<string,number>
 }
 
-export default function DisplayGroup({ players }:DisplayGroup){
-    console.log(players)
+export default function DisplayGroup({ playerIds }:DisplayGroup){
     return <section className="display-group">
-        <Player name="Player 1" turn/>
-        <Player name="Player 2"/>
-        <Player name="Player 3"/>
+        {
+            Object.entries(playerIds).map(([k,v]) => <Player key={k} name={""}/>)
+        }
     </section>
 }
