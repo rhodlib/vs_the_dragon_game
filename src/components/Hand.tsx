@@ -1,17 +1,15 @@
 import "./Hand.css";
 import Card from "./Card";
-import { PlayerObj } from "../logic";
+import { CardType } from "../logic";
 
 type HandType = {
-    player:  PlayerObj
+    playerHand:  CardType[];
 }
 
-export default function Hand({player}:HandType){
-    const cards = player.hand;
-    
+export default function Hand({playerHand}:HandType){
     return <section className="hand">
         {
-            cards?.map(c => <Card key={c.id} id={c.id} dmg={c.dmg} img={c.img}/>)
+            playerHand?.map((c, i) => <Card key={i} id={c.id} dmg={c.dmg} img={c.img} onDblClick={() => Rune.actions.actionCard({cardId: c.id, cardIndex: i})}/>)
         }
     </section>
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "./App.css"
-import { GameState } from "./logic.ts"
+import {  GameState } from "./logic.ts"
 import DisplayGroup from "./components/DisplayGroup.tsx"
 import Hand from "./components/Hand.tsx"
 import CombatSection from "./components/CombatSection.tsx"
@@ -13,9 +13,11 @@ function App() {
     Rune.initClient({
       onChange: ({ game, players, yourPlayerId }) => {
         setGame({...game, players})
+
         if(yourPlayerId){
           setPlayerId(yourPlayerId)
         }
+
       },
     })
   }, [])
@@ -28,7 +30,7 @@ function App() {
       <main>
         <DisplayGroup players={game.players} playersObj={game.playersObj}/>
         <CombatSection monsterZone={game.monsterZone} monsters={game.monsters}/>
-        <Hand player={game.playersObj[playerId]}/>
+        <Hand playerHand={game.playersObj[playerId].hand}/>
       </main>
   )
 }

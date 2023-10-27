@@ -1,8 +1,14 @@
 import { CardType } from "../logic"
 import "./Card.css"
 
-export default function Card({id, dmg, img}: CardType) {
-    return <div className="card">
+type ActionType = {
+    onDblClick: () => void;
+}
+
+type CardHandType = ActionType & CardType
+
+export default function Card({id, dmg, img, onDblClick}: CardHandType) {
+    return <div className="card" onDoubleClick={onDblClick}>
         <img className="card-img" src={img}/>
     </div>
 }

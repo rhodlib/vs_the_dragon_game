@@ -31,7 +31,7 @@ export interface GameState {
 }
 
 type GameActions = {
-  //increment: (params: { amount: number }) => void;
+  actionCard: (params: { cardId: number; cardIndex: number }) => void;
 };
 
 function getRandomCards(cards: CardType[]) {
@@ -42,6 +42,10 @@ function getRandomCards(cards: CardType[]) {
     cardCounter++;
   }
   return newHand;
+}
+
+function newRandomCard(cards: CardType[]) {
+  return cards[Math.floor(Math.random() * cards.length)];
 }
 
 declare global {
@@ -67,7 +71,26 @@ Rune.initLogic({
     }
     return game;
   },
-  actions: {},
+  actions: {
+    actionCard: (
+      { cardId, cardIndex }: { cardId: number; cardIndex: number },
+      { game, playerId }: { game: GameState; playerId: string }
+    ) => {
+      const card = cards.find((c) => c.id === cardId);
+      if (card) {
+        if (card.dmg > 0) {
+          game.playersObj[playerId].hp += card.dmg;
+        } else {
+          game.monsters[game.monsterZone].hp =
+            game.monsters[game.monsterZone].hp + card.dmg;
+          if (game.monsters[game.monsterZone].hp <= 0) {
+            game.monsterZone++;
+          }
+        }
+        game.playersObj[playerId].hand[cardIndex] = newRandomCard(cards);
+      }
+    },
+  },
   events: {
     playerJoined: (playerId, { game }) => {
       game.playersObj[playerId] = { hp: 0, hand: [] };
