@@ -3,7 +3,7 @@ import monsters from "./monsters.json";
 import cards from "./cards.json";
 
 export type CardType = {
-  name: string;
+  id: number;
   dmg: number;
   img: string;
 };
@@ -16,10 +16,15 @@ export type MonsterType = {
   img: string;
 };
 
+export type PlayerObj = {
+  hp: number;
+  hand: CardType[];
+};
+
 export interface GameState {
   monsters: MonsterType[];
   cards: CardType[];
-  playersHp: Record<string, number>;
+  playersObj: Record<string, PlayerObj>;
   turn: string;
   monsterZone: number;
   players: Players;
@@ -28,6 +33,16 @@ export interface GameState {
 type GameActions = {
   //increment: (params: { amount: number }) => void;
 };
+
+function getRandomCards(cards: CardType[]) {
+  const newHand: CardType[] = [];
+  let cardCounter = 0;
+  while (cardCounter < 3) {
+    newHand.push(cards[Math.floor(Math.random() * cards.length)]);
+    cardCounter++;
+  }
+  return newHand;
+}
 
 declare global {
   const Rune: RuneClient<GameState, GameActions>;
@@ -40,23 +55,27 @@ Rune.initLogic({
     const game: GameState = {
       monsters,
       cards,
-      playersHp: {},
+      playersObj: {},
       turn: "",
       monsterZone: 0,
       players: {},
     };
     for (const playerId of allPlayerIds) {
-      game.playersHp[playerId] = 100;
+      game.playersObj[playerId] = { hp: 0, hand: [] };
+      game.playersObj[playerId].hp = 100;
+      game.playersObj[playerId].hand = getRandomCards(cards);
     }
     return game;
   },
   actions: {},
   events: {
     playerJoined: (playerId, { game }) => {
-      game.playersHp[playerId] = 100;
+      game.playersObj[playerId] = { hp: 0, hand: [] };
+      game.playersObj[playerId].hp = 100;
+      game.playersObj[playerId].hand = getRandomCards(cards);
     },
     playerLeft: (playerId, { game }) => {
-      delete game.playersHp[playerId];
+      delete game.playersObj[playerId];
     },
   },
 });

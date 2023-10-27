@@ -1,17 +1,18 @@
+import { PlayerObj } from "../logic";
 import "./DisplayGroup.css";
 import Player from "./Player";
 import { Players } from "rune-games-sdk";
 
 type DisplayType = {
     players: Players;
-    playersHp: Record<string, number>;
+    playersObj: Record<string, PlayerObj>;
 }
 
-export default function DisplayGroup({players, playersHp}: DisplayType ){
+export default function DisplayGroup({players, playersObj}: DisplayType ){
 
     return <section className="display-group">
         {
-            Object.entries(playersHp).map(([k,v]) => <Player key={k} name={players[k].displayName} hp={v} maxHp={100}/>)
+            Object.entries(playersObj).map(([k,v]) => <Player key={k} name={players[k].displayName} hp={v.hp} maxHp={100}/>)
         }
     </section>
 }

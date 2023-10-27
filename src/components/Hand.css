@@ -1,7 +1,7 @@
 .hand {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   justify-content: center;
-  align-items: end;
-  width: 100vw;
-  height: 200px;
+  height: 360px;
+  overflow: hidden;
 }

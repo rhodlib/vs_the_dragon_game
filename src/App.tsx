@@ -7,11 +7,15 @@ import CombatSection from "./components/CombatSection.tsx"
 
 function App() {
   const [game, setGame] = useState<GameState>()
+  const [playerId, setPlayerId] = useState<string>("")
 
   useEffect(() => {
     Rune.initClient({
-      onChange: ({ game, players }) => {
+      onChange: ({ game, players, yourPlayerId }) => {
         setGame({...game, players})
+        if(yourPlayerId){
+          setPlayerId(yourPlayerId)
+        }
       },
     })
   }, [])
@@ -22,9 +26,9 @@ function App() {
   
   return (
       <main>
-        <DisplayGroup players={game.players} playersHp={game.playersHp}/>
+        <DisplayGroup players={game.players} playersObj={game.playersObj}/>
         <CombatSection monsterZone={game.monsterZone} monsters={game.monsters}/>
-        <Hand cards={game.cards}/>
+        <Hand player={game.playersObj[playerId]}/>
       </main>
   )
 }
