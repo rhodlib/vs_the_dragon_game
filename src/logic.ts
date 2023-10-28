@@ -19,6 +19,7 @@ export type MonsterType = {
 export type PlayerObj = {
   hp: number;
   hand: CardType[];
+  id: string;
 };
 
 export interface GameState {
@@ -65,9 +66,15 @@ Rune.initLogic({
       players: {},
     };
     for (const playerId of allPlayerIds) {
-      game.playersObj[playerId] = { hp: 0, hand: [] };
-      game.playersObj[playerId].hp = 100;
-      game.playersObj[playerId].hand = getRandomCards(cards);
+      if (!game.playersObj[playerId]) {
+        game.playersObj[playerId] = { hp: 0, hand: [], id: "" };
+        game.playersObj[playerId].hp = 100;
+        game.playersObj[playerId].hand = getRandomCards(cards);
+        game.playersObj[playerId].id = playerId;
+      }
+    }
+    if (Object.values(game.playersObj).length !== 0) {
+      game.turn = Object.values(game.playersObj)[0].id;
     }
     return game;
   },
@@ -88,17 +95,34 @@ Rune.initLogic({
           }
         }
         game.playersObj[playerId].hand[cardIndex] = newRandomCard(cards);
+        const playerArray = Object.values(game.playersObj);
+        const playerIndex = playerArray.findIndex((p) => p.id === playerId);
+
+        if (playerArray[playerIndex + 1] !== undefined) {
+          game.turn = playerArray[playerIndex + 1].id;
+        } else {
+          game.turn = Object.values(game.playersObj)[0].id;
+        }
       }
     },
   },
   events: {
     playerJoined: (playerId, { game }) => {
-      game.playersObj[playerId] = { hp: 0, hand: [] };
+      game.playersObj[playerId] = { hp: 0, hand: [], id: "" };
       game.playersObj[playerId].hp = 100;
       game.playersObj[playerId].hand = getRandomCards(cards);
+      game.playersObj[playerId].id = playerId;
     },
     playerLeft: (playerId, { game }) => {
       delete game.playersObj[playerId];
     },
+  },
+  update: ({ game, allPlayerIds }) => {
+    if (Rune.gameTimeInSeconds() % 5 === 0) {
+      const playerId =
+        allPlayerIds[Math.floor(Math.random() * allPlayerIds.length)];
+      game.playersObj[playerId].hp =
+        game.playersObj[playerId].hp - game.monsters[game.monsterZone].dmg;
+    }
   },
 });

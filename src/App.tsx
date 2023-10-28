@@ -17,7 +17,6 @@ function App() {
         if(yourPlayerId){
           setPlayerId(yourPlayerId)
         }
-
       },
     })
   }, [])
@@ -28,9 +27,9 @@ function App() {
   
   return (
       <main>
-        <DisplayGroup players={game.players} playersObj={game.playersObj}/>
+        <DisplayGroup turn={game.turn} players={game.players} playersObj={game.playersObj}/>
         <CombatSection monsterZone={game.monsterZone} monsters={game.monsters}/>
-        <Hand playerHand={game.playersObj[playerId].hand}/>
+        <Hand yourTurn={game.turn === playerId} playerHand={game.playersObj[playerId].hand}/>
       </main>
   )
 }
