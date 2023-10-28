@@ -27,6 +27,7 @@ export interface GameState {
   cards: CardType[];
   playersObj: Record<string, PlayerObj>;
   turn: string;
+  lastDamage: string;
   monsterZone: number;
   players: Players;
 }
@@ -63,6 +64,7 @@ Rune.initLogic({
       playersObj: {},
       turn: "",
       monsterZone: 0,
+      lastDamage: "",
       players: {},
     };
     for (const playerId of allPlayerIds) {
@@ -87,12 +89,14 @@ Rune.initLogic({
       if (card) {
         if (card.dmg > 0) {
           game.playersObj[playerId].hp += card.dmg;
+          game.lastDamage = "";
         } else {
           game.monsters[game.monsterZone].hp =
             game.monsters[game.monsterZone].hp + card.dmg;
           if (game.monsters[game.monsterZone].hp <= 0) {
             game.monsterZone++;
           }
+          game.lastDamage = `${playerId}:${card.dmg}`;
         }
         game.playersObj[playerId].hand[cardIndex] = newRandomCard(cards);
         const playerArray = Object.values(game.playersObj);
@@ -123,6 +127,11 @@ Rune.initLogic({
         allPlayerIds[Math.floor(Math.random() * allPlayerIds.length)];
       game.playersObj[playerId].hp =
         game.playersObj[playerId].hp - game.monsters[game.monsterZone].dmg;
+
+      const players = Object.values(game.playersObj);
+      if (players.some((p) => p.hp < 0)) {
+        Rune.gameOver();
+      }
     }
   },
 });

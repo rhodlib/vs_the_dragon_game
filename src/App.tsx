@@ -11,9 +11,8 @@ function App() {
 
   useEffect(() => {
     Rune.initClient({
-      onChange: ({ game, players, yourPlayerId }) => {
+      onChange: ({ game, yourPlayerId, players }) => {
         setGame({...game, players})
-
         if(yourPlayerId){
           setPlayerId(yourPlayerId)
         }
@@ -25,10 +24,18 @@ function App() {
     return <div>Loading...</div>
   }
   
+  const [user,dmg] = game.lastDamage.split(":");
+  let displayDmg = ""
+  if(user && dmg){
+    displayDmg = `${game.players[user].displayName} ${dmg}`
+  }else {
+    displayDmg = ""
+  }
+
   return (
       <main>
         <DisplayGroup turn={game.turn} players={game.players} playersObj={game.playersObj}/>
-        <CombatSection monsterZone={game.monsterZone} monsters={game.monsters}/>
+        <CombatSection displayDmg={displayDmg} monsterZone={game.monsterZone} monsters={game.monsters}/>
         <Hand yourTurn={game.turn === playerId} playerHand={game.playersObj[playerId].hand}/>
       </main>
   )
