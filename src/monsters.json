@@ -2,24 +2,28 @@
     {
         "name": "Slime",
         "hp": 500,
+        "maxHp": 500,
         "dmg": 5,
         "crit": 20,
         "img": "/slime.png"
     },{
         "name": "Skeleton",
         "hp": 800,
+        "maxHp": 800,
         "dmg": 8,
         "crit": 15,
         "img": "/skeleton.png"
     },{
         "name": "Goblin",
         "hp": 1000,
+        "maxHp": 1000,
         "dmg": 10,
         "crit": 50,
         "img": "/goblin.png"
     },{
         "name": "Dragon",
         "hp": 1500,
+        "maxHp": 1500,
         "dmg": 12,
         "crit": 20,
         "img": "/dragon.png"

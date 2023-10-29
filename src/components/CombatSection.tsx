@@ -34,7 +34,7 @@ export default function CombatSection({monsterZone, monsters, displayDmg, monste
     },[showDmg])
 
     return <section className="combat-section">
-        <Monster hitMonster={hitMonster} monsterAttack={monsterAttack} name={monster.name} img={monster.img} hp={monster.hp} maxHp={monster.hp} dmg={monster.dmg}/>
+        <Monster hitMonster={hitMonster} monsterAttack={monsterAttack} name={monster.name} img={monster.img} hp={monster.hp} maxHp={monster.maxHp} dmg={monster.dmg}/>
         {showDmg && <DisplayDamage displayDmg={displayDmg}/>}
     </section>
 }

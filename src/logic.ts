@@ -11,6 +11,7 @@ export type CardType = {
 export type MonsterType = {
   name: string;
   hp: number;
+  maxHp: number;
   dmg: number;
   crit: number;
   img: string;
@@ -32,6 +33,10 @@ export interface GameState {
   hitMonster: boolean;
   monsterZone: number;
   players: Players;
+}
+
+interface Winner {
+  [key: string]: number | "WON" | "LOST";
 }
 
 type GameActions = {
@@ -99,7 +104,19 @@ Rune.initLogic({
           game.monsters[game.monsterZone].hp =
             game.monsters[game.monsterZone].hp + card.dmg;
           if (game.monsters[game.monsterZone].hp <= 0) {
-            game.monsterZone++;
+            if (game.monsters[game.monsterZone + 1] === undefined) {
+              const players: Winner = {};
+
+              Object.values(game.playersObj).forEach((player) => {
+                players[player.id] = "WON";
+              });
+
+              Rune.gameOver({
+                players,
+              });
+            } else {
+              game.monsterZone++;
+            }
           }
           game.lastDamage = `${playerId}:${card.dmg}`;
         }
@@ -127,7 +144,7 @@ Rune.initLogic({
     },
   },
   update: ({ game, allPlayerIds }) => {
-    if (Rune.gameTimeInSeconds() % 5 === 0) {
+    if ((Rune.gameTime() / 1000) % 5 === 0) {
       game.monsterAttack = !game.hitMonster ? true : false;
       const playerId =
         allPlayerIds[Math.floor(Math.random() * allPlayerIds.length)];
