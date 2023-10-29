@@ -8,9 +8,11 @@ type CombatSection = {
     monsterZone: number;
     monsters: MonsterType[];
     displayDmg: string;
+    monsterAttack: boolean;
+    hitMonster: boolean;
 }
 
-export default function CombatSection({monsterZone, monsters, displayDmg}:CombatSection){
+export default function CombatSection({monsterZone, monsters, displayDmg, monsterAttack, hitMonster}:CombatSection){
     const monster = monsters[monsterZone]
 
     const [showDmg, setShowDmg] = useState(false)
@@ -32,7 +34,7 @@ export default function CombatSection({monsterZone, monsters, displayDmg}:Combat
     },[showDmg])
 
     return <section className="combat-section">
-        <Monster name={monster.name} img={monster.img} hp={monster.hp} maxHp={monster.hp} dmg={monster.dmg}/>
+        <Monster hitMonster={hitMonster} monsterAttack={monsterAttack} name={monster.name} img={monster.img} hp={monster.hp} maxHp={monster.hp} dmg={monster.dmg}/>
         {showDmg && <DisplayDamage displayDmg={displayDmg}/>}
     </section>
 }

@@ -35,7 +35,7 @@ function App() {
   return (
       <main>
         <DisplayGroup turn={game.turn} players={game.players} playersObj={game.playersObj}/>
-        <CombatSection displayDmg={displayDmg} monsterZone={game.monsterZone} monsters={game.monsters}/>
+        <CombatSection hitMonster={game.hitMonster} monsterAttack={game.monsterAttack} displayDmg={displayDmg} monsterZone={game.monsterZone} monsters={game.monsters}/>
         <Hand yourTurn={game.turn === playerId} playerHand={game.playersObj[playerId].hand}/>
       </main>
   )

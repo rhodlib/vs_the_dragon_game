@@ -28,6 +28,8 @@ export interface GameState {
   playersObj: Record<string, PlayerObj>;
   turn: string;
   lastDamage: string;
+  monsterAttack: boolean;
+  hitMonster: boolean;
   monsterZone: number;
   players: Players;
 }
@@ -64,6 +66,8 @@ Rune.initLogic({
       playersObj: {},
       turn: "",
       monsterZone: 0,
+      monsterAttack: false,
+      hitMonster: false,
       lastDamage: "",
       players: {},
     };
@@ -91,6 +95,7 @@ Rune.initLogic({
           game.playersObj[playerId].hp += card.dmg;
           game.lastDamage = "";
         } else {
+          game.hitMonster = true;
           game.monsters[game.monsterZone].hp =
             game.monsters[game.monsterZone].hp + card.dmg;
           if (game.monsters[game.monsterZone].hp <= 0) {
@@ -123,6 +128,7 @@ Rune.initLogic({
   },
   update: ({ game, allPlayerIds }) => {
     if (Rune.gameTimeInSeconds() % 5 === 0) {
+      game.monsterAttack = !game.hitMonster ? true : false;
       const playerId =
         allPlayerIds[Math.floor(Math.random() * allPlayerIds.length)];
       game.playersObj[playerId].hp =
@@ -132,6 +138,9 @@ Rune.initLogic({
       if (players.some((p) => p.hp < 0)) {
         Rune.gameOver();
       }
+    } else {
+      game.monsterAttack = false;
+      game.hitMonster = false;
     }
   },
 });

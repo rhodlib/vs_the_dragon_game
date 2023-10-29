@@ -1,26 +1,26 @@
 [
     {
         "name": "Slime",
-        "hp": 1000,
-        "dmg": 3,
+        "hp": 500,
+        "dmg": 5,
         "crit": 20,
         "img": "/slime.png"
     },{
         "name": "Skeleton",
-        "hp": 1300,
-        "dmg": 4,
+        "hp": 800,
+        "dmg": 8,
         "crit": 15,
         "img": "/skeleton.png"
     },{
         "name": "Goblin",
-        "hp": 1500,
-        "dmg": 3,
+        "hp": 1000,
+        "dmg": 10,
         "crit": 50,
         "img": "/goblin.png"
     },{
         "name": "Dragon",
-        "hp": 2500,
-        "dmg": 6,
+        "hp": 1500,
+        "dmg": 12,
         "crit": 20,
         "img": "/dragon.png"
     }

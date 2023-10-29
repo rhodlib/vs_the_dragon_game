@@ -1,17 +1,17 @@
 [
     {
         "id": 0,
-        "dmg": -2,
+        "dmg": -6,
         "img": "/sword.png"
     },
     {
         "id": 1,
-        "dmg": 10,
+        "dmg": 5,
         "img": "/pot.png"
     },
     {
         "id": 2,
-        "dmg": -3,
+        "dmg": -10,
         "img": "/mace.png"
     }
 ]
