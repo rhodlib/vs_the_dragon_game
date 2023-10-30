@@ -1,6 +1,8 @@
 import "./Player.css";
+import avatarDefault from "../assets/avatar.png"
+import turnImage from "../assets/turn.png"
 
-export default function Player({avatar="../avatar.png", name="Prueba", hp = 100, maxHp = 100, turn = false}){
+export default function Player({avatar=avatarDefault, name="Prueba", hp = 100, maxHp = 100, turn = false}){
     return <div className="player">
         <img src={avatar} className="avatar"></img>
         <div className="status">
@@ -8,7 +10,7 @@ export default function Player({avatar="../avatar.png", name="Prueba", hp = 100,
             <div>{`${hp}/${maxHp}`}</div>
         </div>
         {
-            turn && <img src="../assets/turn.png" className="turn"></img>
+            turn && <img src={turnImage} className="turn"></img>
         }
     </div>
 }

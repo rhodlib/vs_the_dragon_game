@@ -2,6 +2,9 @@ import "./Hand.css";
 import Card from "./Card";
 import { CardType } from "../logic";
 import { useEffect, useState } from "react";
+import potionDrink from "../assets/potion_drink_long.wav";
+import playerPunch from "../assets/player_punch.wav";
+
 
 type HandType = {
     playerHand:  CardType[];
@@ -30,7 +33,7 @@ export default function Hand({playerHand, yourTurn}:HandType){
         {
             playerHand?.map((c, i) => <Card key={i} id={c.id} dmg={c.dmg} img={c.img} onDblClick={() => onDoubleClick(c.id, i, c.dmg)}/>)
         }
-        {activeSound === "pot" && <audio src="../assets/potion_drink_long.wav" autoPlay></audio>}
-        {activeSound === "punch" && <audio src="../assets/player_punch.wav" autoPlay></audio>}
+        {activeSound === "pot" && <audio src={potionDrink} autoPlay></audio>}
+        {activeSound === "punch" && <audio src={playerPunch} autoPlay></audio>}
     </section>
 }

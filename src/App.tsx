@@ -4,6 +4,7 @@ import {  GameState } from "./logic.ts"
 import DisplayGroup from "./components/DisplayGroup.tsx"
 import Hand from "./components/Hand.tsx"
 import CombatSection from "./components/CombatSection.tsx"
+import monsterPunch from "./assets/monster_punch.wav"
 
 function App() {
   const [game, setGame] = useState<GameState>()
@@ -31,13 +32,13 @@ function App() {
   }else {
     displayDmg = ""
   }
-console.log(game.monsterAttack)
+  
   return (
       <main>
         <DisplayGroup turn={game.turn} players={game.players} playersObj={game.playersObj}/>
         <CombatSection hitMonster={game.hitMonster} monsterAttack={game.monsterAttack} displayDmg={displayDmg} monsterZone={game.monsterZone} monsters={game.monsters}/>
         <Hand yourTurn={game.turn === playerId} playerHand={game.playersObj[playerId].hand}/>
-        {game.monsterAttack && <audio src="./assets/monster_punch.wav" autoPlay></audio>} 
+        {game.monsterAttack && <audio src={monsterPunch} autoPlay></audio>} 
       </main>
   )
 }

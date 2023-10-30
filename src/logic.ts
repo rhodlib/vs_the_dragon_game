@@ -1,6 +1,6 @@
 import type { Players, RuneClient } from "rune-games-sdk/multiplayer";
-import monsters from "./monsters.json";
-import cards from "./cards.json";
+import { monsters } from "./monsters";
+import { cards } from "./cards";
 
 export type CardType = {
   id: number;
