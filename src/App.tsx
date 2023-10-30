@@ -37,7 +37,7 @@ console.log(game.monsterAttack)
         <DisplayGroup turn={game.turn} players={game.players} playersObj={game.playersObj}/>
         <CombatSection hitMonster={game.hitMonster} monsterAttack={game.monsterAttack} displayDmg={displayDmg} monsterZone={game.monsterZone} monsters={game.monsters}/>
         <Hand yourTurn={game.turn === playerId} playerHand={game.playersObj[playerId].hand}/>
-        {game.monsterAttack && <audio src="/monster_punch.wav" autoPlay></audio>} 
+        {game.monsterAttack && <audio src="./assets/monster_punch.wav" autoPlay></audio>} 
       </main>
   )
 }

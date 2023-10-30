@@ -30,7 +30,7 @@ export default function Hand({playerHand, yourTurn}:HandType){
         {
             playerHand?.map((c, i) => <Card key={i} id={c.id} dmg={c.dmg} img={c.img} onDblClick={() => onDoubleClick(c.id, i, c.dmg)}/>)
         }
-        {activeSound === "pot" && <audio src="/potion_drink_long.wav" autoPlay></audio>}
-        {activeSound === "punch" && <audio src="/player_punch.wav" autoPlay></audio>}
+        {activeSound === "pot" && <audio src="../assets/potion_drink_long.wav" autoPlay></audio>}
+        {activeSound === "punch" && <audio src="../assets/player_punch.wav" autoPlay></audio>}
     </section>
 }

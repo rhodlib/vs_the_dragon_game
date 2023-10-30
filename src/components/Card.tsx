@@ -7,7 +7,7 @@ type ActionType = {
 
 type CardHandType = ActionType & CardType
 
-export default function Card({id, dmg, img, onDblClick}: CardHandType) {
+export default function Card({ img, onDblClick}: CardHandType) {
     return <div className="card" onDoubleClick={onDblClick}>
         <img className="card-img" src={img}/>
     </div>
