@@ -33,7 +33,7 @@
 }
 
 .bounce2 {
-  animation: bounce2 2s ease infinite;
+  animation: bounce2 1s ease infinite;
 }
 
 @keyframes bounce2 {

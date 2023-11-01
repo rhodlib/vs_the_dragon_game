@@ -9,7 +9,7 @@ main {
   justify-content: space-between;
   overflow-y: hidden;
   flex-direction: column;
-  background-image: url("./assets/room.jpg");
+  background-image: url("assets/room.jpg");
   background-position: center;
   background-size: cover;
   width: 100vw;

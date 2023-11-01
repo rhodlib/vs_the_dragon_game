@@ -11,7 +11,7 @@ type Monster = {
     hitMonster: boolean
 }
 
-export default function Monster({name, hp, maxHp, img , dmg, monsterAttack, hitMonster}:Monster){
+export default function Monster({name, hp, maxHp, img , monsterAttack, hitMonster}:Monster){
     return <div className="monster-container">
         <img src={img} className={classNames("monster-img", monsterAttack ? "bounce2" : "", hitMonster ? "wobble" : "")}/>
         <div className="monster-status">

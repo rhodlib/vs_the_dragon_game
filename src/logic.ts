@@ -1,7 +1,7 @@
 import type { Players, RuneClient } from "rune-games-sdk/multiplayer";
 import { monsters } from "./monsters";
 import { cards } from "./cards";
-
+import { playSound } from "./sounds";
 export type CardType = {
   id: number;
   dmg: number;
@@ -41,6 +41,8 @@ interface Winner {
 
 type GameActions = {
   actionCard: (params: { cardId: number; cardIndex: number }) => void;
+  healCard: (params: { cardId: number; cardIndex: number }) => void;
+  monsterAttack: (params: { cardId: number; cardIndex: number }) => void;
 };
 
 function getRandomCards(cards: CardType[]) {
@@ -96,30 +98,44 @@ Rune.initLogic({
     ) => {
       const card = cards.find((c) => c.id === cardId);
       if (card) {
-        if (card.dmg > 0) {
-          game.playersObj[playerId].hp += card.dmg;
-          game.lastDamage = "";
-        } else {
-          game.hitMonster = true;
-          game.monsters[game.monsterZone].hp =
-            game.monsters[game.monsterZone].hp + card.dmg;
-          if (game.monsters[game.monsterZone].hp <= 0) {
-            if (game.monsters[game.monsterZone + 1] === undefined) {
-              const players: Winner = {};
+        game.hitMonster = true;
+        game.monsters[game.monsterZone].hp =
+          game.monsters[game.monsterZone].hp + card.dmg;
+        if (game.monsters[game.monsterZone].hp <= 0) {
+          if (game.monsters[game.monsterZone + 1] === undefined) {
+            const players: Winner = {};
 
-              Object.values(game.playersObj).forEach((player) => {
-                players[player.id] = "WON";
-              });
+            Object.values(game.playersObj).forEach((player) => {
+              players[player.id] = "WON";
+            });
 
-              Rune.gameOver({
-                players,
-              });
-            } else {
-              game.monsterZone++;
-            }
+            Rune.gameOver({
+              players,
+            });
+          } else {
+            game.monsterZone++;
           }
-          game.lastDamage = `${playerId}:${card.dmg}`;
         }
+        game.lastDamage = `${playerId}:${card.dmg}`;
+      }
+      game.playersObj[playerId].hand[cardIndex] = newRandomCard(cards);
+      const playerArray = Object.values(game.playersObj);
+      const playerIndex = playerArray.findIndex((p) => p.id === playerId);
+
+      if (playerArray[playerIndex + 1] !== undefined) {
+        game.turn = playerArray[playerIndex + 1].id;
+      } else {
+        game.turn = Object.values(game.playersObj)[0].id;
+      }
+    },
+    healCard: (
+      { cardId, cardIndex }: { cardId: number; cardIndex: number },
+      { game, playerId }: { game: GameState; playerId: string }
+    ) => {
+      const card = cards.find((c) => c.id === cardId);
+      if (card) {
+        game.playersObj[playerId].hp += card.dmg;
+        game.lastDamage = "";
         game.playersObj[playerId].hand[cardIndex] = newRandomCard(cards);
         const playerArray = Object.values(game.playersObj);
         const playerIndex = playerArray.findIndex((p) => p.id === playerId);
@@ -129,6 +145,22 @@ Rune.initLogic({
         } else {
           game.turn = Object.values(game.playersObj)[0].id;
         }
+      }
+    },
+    monsterAttack: (
+      { cardId, cardIndex }: { cardId: number; cardIndex: number },
+      { game, playerId }: { game: GameState; playerId: string }
+    ) => {
+      game.monsterAttack = !game.hitMonster ? true : false;
+      const players = Object.values(game.playersObj);
+      const randomPlayer = [...players?.map((p) => p.id)][
+        Math.floor(Math.random() * [...players?.map((p) => p.id)].length)
+      ];
+      game.playersObj[randomPlayer].hp =
+        game.playersObj[randomPlayer].hp - game.monsters[game.monsterZone].dmg;
+
+      if (players.some((p) => p.hp < 0)) {
+        Rune.gameOver();
       }
     },
   },
@@ -142,22 +174,5 @@ Rune.initLogic({
     playerLeft: (playerId, { game }) => {
       delete game.playersObj[playerId];
     },
-  },
-  update: ({ game, allPlayerIds }) => {
-    if ((Rune.gameTime() / 1000) % 5 === 0) {
-      game.monsterAttack = !game.hitMonster ? true : false;
-      const playerId =
-        allPlayerIds[Math.floor(Math.random() * allPlayerIds.length)];
-      game.playersObj[playerId].hp =
-        game.playersObj[playerId].hp - game.monsters[game.monsterZone].dmg;
-
-      const players = Object.values(game.playersObj);
-      if (players.some((p) => p.hp < 0)) {
-        Rune.gameOver();
-      }
-    } else {
-      game.monsterAttack = false;
-      game.hitMonster = false;
-    }
   },
 });

@@ -4,7 +4,7 @@ import {  GameState } from "./logic.ts"
 import DisplayGroup from "./components/DisplayGroup.tsx"
 import Hand from "./components/Hand.tsx"
 import CombatSection from "./components/CombatSection.tsx"
-import monsterPunch from "./assets/monster_punch.wav"
+import { playSound } from "./sounds.ts"
 
 function App() {
   const [game, setGame] = useState<GameState>()
@@ -12,10 +12,17 @@ function App() {
 
   useEffect(() => {
     Rune.initClient({
-      onChange: ({ game, yourPlayerId, players }) => {
+      onChange: ({ game, yourPlayerId, players, action }) => {
         setGame({...game, players})
         if(yourPlayerId){
           setPlayerId(yourPlayerId)
+        }
+        console.log(action?.name)
+        if(action?.name === "actionCard"){
+          playSound("playerPunch")
+        }
+        if(action?.name === "healCard"){
+          playSound("potion")
         }
       },
     })
@@ -38,7 +45,6 @@ function App() {
         <DisplayGroup turn={game.turn} players={game.players} playersObj={game.playersObj}/>
         <CombatSection hitMonster={game.hitMonster} monsterAttack={game.monsterAttack} displayDmg={displayDmg} monsterZone={game.monsterZone} monsters={game.monsters}/>
         <Hand yourTurn={game.turn === playerId} playerHand={game.playersObj[playerId].hand}/>
-        {game.monsterAttack && <audio src={monsterPunch} autoPlay></audio>} 
       </main>
   )
 }
