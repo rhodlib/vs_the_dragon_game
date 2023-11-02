@@ -4,28 +4,30 @@ import {  GameState } from "./logic.ts"
 import DisplayGroup from "./components/DisplayGroup.tsx"
 import Hand from "./components/Hand.tsx"
 import CombatSection from "./components/CombatSection.tsx"
-import { playSound } from "./sounds.ts"
+import { sounds } from "./sounds/sounds.ts"
 
 function App() {
   const [game, setGame] = useState<GameState>()
   const [playerId, setPlayerId] = useState<string>("")
 
   useEffect(() => {
-    Rune.initClient({
+   import("./logic.ts").then( () => { Rune.initClient({
       onChange: ({ game, yourPlayerId, players, action }) => {
         setGame({...game, players})
         if(yourPlayerId){
           setPlayerId(yourPlayerId)
         }
-        console.log(action?.name)
-        if(action?.name === "actionCard"){
-          playSound("playerPunch")
+        if(action?.action === "actionCard"){
+          sounds.hitMonster.play()
         }
-        if(action?.name === "healCard"){
-          playSound("potion")
+        if(action?.action === "healCard"){
+          sounds.potion.play()
+        }
+        if(game.counter === 3){
+          Rune.actions.monsterAttack({cardId: 1, cardIndex: 2})
         }
       },
-    })
+    }) })
   }, [])
 
   if (!game) {

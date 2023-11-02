@@ -1,7 +1,7 @@
 import type { Players, RuneClient } from "rune-games-sdk/multiplayer";
-import { monsters } from "./monsters";
-import { cards } from "./cards";
-import { playSound } from "./sounds";
+import monsters from "./monsters.json";
+import cards from "./cards.json";
+
 export type CardType = {
   id: number;
   dmg: number;
@@ -33,6 +33,7 @@ export interface GameState {
   hitMonster: boolean;
   monsterZone: number;
   players: Players;
+  counter: number;
 }
 
 interface Winner {
@@ -77,6 +78,7 @@ Rune.initLogic({
       hitMonster: false,
       lastDamage: "",
       players: {},
+      counter: 0,
     };
     for (const playerId of allPlayerIds) {
       if (!game.playersObj[playerId]) {
@@ -115,6 +117,11 @@ Rune.initLogic({
           } else {
             game.monsterZone++;
           }
+        }
+        if (game.counter == 3) {
+          game.counter = 0;
+        } else {
+          game.counter++;
         }
         game.lastDamage = `${playerId}:${card.dmg}`;
       }
