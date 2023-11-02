@@ -13,7 +13,7 @@ export default function DisplayGroup({players, playersObj, turn}: DisplayType ){
 
     return <section className="display-group">
         {
-            Object.entries(playersObj).map(([k,v]) => <Player key={k} turn={turn === k} name={players[k].displayName} hp={v.hp} maxHp={100}/>)
+            Object.entries(playersObj).map(([k,v]) => <Player key={k} turn={turn === k} name={players[k]?.displayName} avatar={players[k]?.avatarUrl} hp={v?.hp} maxHp={100}/>)
         }
     </section>
 }

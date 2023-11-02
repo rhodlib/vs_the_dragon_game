@@ -43,7 +43,6 @@ interface Winner {
 type GameActions = {
   actionCard: (params: { cardId: number; cardIndex: number }) => void;
   healCard: (params: { cardId: number; cardIndex: number }) => void;
-  monsterAttack: (params: { cardId: number; cardIndex: number }) => void;
 };
 
 function getRandomCards(cards: CardType[]) {
@@ -65,7 +64,7 @@ declare global {
 }
 
 Rune.initLogic({
-  minPlayers: 2,
+  minPlayers: 1,
   maxPlayers: 4,
   setup: (allPlayerIds: string[]): GameState => {
     const game: GameState = {
@@ -154,22 +153,6 @@ Rune.initLogic({
         }
       }
     },
-    monsterAttack: (
-      { cardId, cardIndex }: { cardId: number; cardIndex: number },
-      { game, playerId }: { game: GameState; playerId: string }
-    ) => {
-      game.monsterAttack = !game.hitMonster ? true : false;
-      const players = Object.values(game.playersObj);
-      const randomPlayer = [...players?.map((p) => p.id)][
-        Math.floor(Math.random() * [...players?.map((p) => p.id)].length)
-      ];
-      game.playersObj[randomPlayer].hp =
-        game.playersObj[randomPlayer].hp - game.monsters[game.monsterZone].dmg;
-
-      if (players.some((p) => p.hp < 0)) {
-        Rune.gameOver();
-      }
-    },
   },
   events: {
     playerJoined: (playerId, { game }) => {
@@ -181,5 +164,23 @@ Rune.initLogic({
     playerLeft: (playerId, { game }) => {
       delete game.playersObj[playerId];
     },
+  },
+  update: ({ game, allPlayerIds }) => {
+    //If 30 seconds have passed since last player scored, switch player
+    if ((Rune.gameTime() / 1000) % 4 === 0) {
+      game.monsterAttack = !game.hitMonster ? true : false;
+      const players = Object.values(game.playersObj);
+      const randomPlayer =
+        allPlayerIds[Math.floor(Math.random() * allPlayerIds.length)];
+      game.playersObj[randomPlayer].hp =
+        game.playersObj[randomPlayer].hp - game.monsters[game.monsterZone].dmg;
+
+      if (players.some((p) => p.hp < 0)) {
+        Rune.gameOver();
+      }
+    } else {
+      game.monsterAttack = false;
+      game.hitMonster = false;
+    }
   },
 });
